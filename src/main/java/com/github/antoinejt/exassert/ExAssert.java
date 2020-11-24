@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 @SuppressWarnings({"unused", "java:S1148"})
 public class ExAssert {
     private ExAssert() {
-        // hide default public ctor
+        // hides the public default ctor
     }
 
     public static void exAssert(boolean condition) {
