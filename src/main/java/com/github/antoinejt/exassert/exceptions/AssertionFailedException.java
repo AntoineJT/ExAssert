@@ -1,4 +1,4 @@
-package com.github.antoinejt.exassert;
+package com.github.antoinejt.exassert.exceptions;
 
 @SuppressWarnings("unused")
 public class AssertionFailedException extends Exception {

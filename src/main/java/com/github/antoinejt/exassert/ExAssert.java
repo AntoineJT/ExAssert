@@ -1,5 +1,7 @@
 package com.github.antoinejt.exassert;
 
+import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
+
 import java.lang.reflect.Constructor;
 import java.util.function.Supplier;
 
