@@ -1,5 +1,7 @@
 package com.github.antoinejt.exassert.utils;
 
+import java.lang.reflect.Method;
+
 public class ExReflection {
     private ExReflection() {
         // hides the public default ctor

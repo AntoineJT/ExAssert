@@ -8,7 +8,8 @@ import com.github.antoinejt.exassert.utils.ExReflection;
 
 class ExReflectionTest {
     @Test
-    void test() {
+    void getPrivateStaticClassTest() {
         assertNotNull(ExReflection.getPrivateStaticClass(ExAssert.class, "Internals"));
+        assertNull(ExReflection.getPrivateStaticClass(ExAssert.class, "NonExistingStaticInnerClass"));
     }
 }
