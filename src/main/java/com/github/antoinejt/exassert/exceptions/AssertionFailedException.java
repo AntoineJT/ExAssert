@@ -1,6 +1,6 @@
 package com.github.antoinejt.exassert.exceptions;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("serial")
 public class AssertionFailedException extends Exception {
     public AssertionFailedException() {
         super();

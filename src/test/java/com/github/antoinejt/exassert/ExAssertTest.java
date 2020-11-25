@@ -1,15 +1,11 @@
 package com.github.antoinejt.exassert;
 
-import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
+import java.lang.reflect.Method;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.github.antoinejt.exassert.utils.ExReflection;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExAssertTest {
     private static Class<?> exAssertInternals;
