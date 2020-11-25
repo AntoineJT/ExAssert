@@ -7,3 +7,10 @@ build/
 
 # IntelliJ
 .idea/
+
+# Eclipse
+.settings/
+bin/
+.classpath
+.project
+
