@@ -12,99 +12,188 @@ import org.junit.jupiter.api.Test;
 
 class PreconditionsUnitTest {
 
-  // TODO test for positive/negative double/float
-
   @Nested
-  class GivenStrictlyPositiveInteger {
+  class GivenStrictlyPositiveNumber {
 
-    private int number;
+    private int positiveInt;
+    private float positiveFloat;
+    private double positiveDouble;
 
     @BeforeEach
     void setup() {
-      this.number = Faker.instance().number().positive();
+      this.positiveInt = Faker.instance().number().positive();
+      this.positiveFloat = Faker.instance().number().positive();
+      this.positiveDouble = Faker.instance().number().positive();
     }
 
     @Nested
     class WhenCallingRequiresUnsigned {
 
-      private Throwable thrown;
+      private Throwable thrownInt;
+      private Throwable thrownFloat;
+      private Throwable thrownDouble;
 
       @BeforeEach
       void setup() {
-        this.thrown =
+        this.thrownInt =
             catchThrowable(
-                () -> Preconditions.requiresUnsigned(GivenStrictlyPositiveInteger.this.number));
+                () -> Preconditions.requiresUnsigned(GivenStrictlyPositiveNumber.this.positiveInt));
+        this.thrownFloat =
+            catchThrowable(
+                () ->
+                    Preconditions.requiresUnsigned(GivenStrictlyPositiveNumber.this.positiveFloat));
+        this.thrownDouble =
+            catchThrowable(
+                () ->
+                    Preconditions.requiresUnsigned(
+                        GivenStrictlyPositiveNumber.this.positiveDouble));
       }
 
       @Test
-      void thenItShouldNotThrowAssertionFailedException() {
-        assertThat(this.thrown).isNull();
+      void thenItShouldNotThrowForIntParam() {
+        assertThat(this.thrownInt).isNull();
+      }
+
+      @Test
+      void thenItShouldNotThrowForFloatParam() {
+        assertThat(this.thrownFloat).isNull();
+      }
+
+      @Test
+      void thenItShouldNotThrowForDouble() {
+        assertThat(this.thrownDouble).isNull();
       }
     }
 
     @Nested
     class WhenCallingRequiresStrictlyPositive {
 
-      private Throwable thrown;
+      private Throwable thrownInt;
+      private Throwable thrownFloat;
+      private Throwable thrownDouble;
 
       @BeforeEach
       void setup() {
-        this.thrown =
+        this.thrownInt =
             catchThrowable(
                 () ->
                     Preconditions.requiresStrictlyPositive(
-                        GivenStrictlyPositiveInteger.this.number));
+                        GivenStrictlyPositiveNumber.this.positiveInt));
+        this.thrownFloat =
+            catchThrowable(
+                () ->
+                    Preconditions.requiresStrictlyPositive(
+                        GivenStrictlyPositiveNumber.this.positiveFloat));
+        this.thrownDouble =
+            catchThrowable(
+                () ->
+                    Preconditions.requiresStrictlyPositive(
+                        GivenStrictlyPositiveNumber.this.positiveDouble));
       }
 
       @Test
-      void thenItShouldNotThrowAssertionFailedException() {
-        assertThat(this.thrown).isNull();
+      void thenItShouldNotThrowForIntParam() {
+        assertThat(this.thrownInt).isNull();
+      }
+
+      @Test
+      void thenItShouldNotThrowForFloatParam() {
+        assertThat(this.thrownFloat).isNull();
+      }
+
+      @Test
+      void thenItShouldNotThrowForDoubleParam() {
+        assertThat(this.thrownDouble).isNull();
       }
     }
   }
 
   @Nested
-  class GivenNegativeInteger {
+  class GivenNegativeNumber {
 
-    private int number;
+    private int negativeInt;
+    private float negativeFloat;
+    private double negativeDouble;
 
     @BeforeEach
     void setup() {
-      this.number = Faker.instance().number().negative();
+      this.negativeInt = Faker.instance().number().negative();
+      this.negativeFloat = Faker.instance().number().negative();
+      this.negativeDouble = Faker.instance().number().negative();
     }
 
     @Nested
     class WhenCallingRequiresUnsigned {
 
-      private Throwable thrown;
+      private Throwable thrownInt;
+      private Throwable thrownFloat;
+      private Throwable thrownDouble;
 
       @BeforeEach
       void setup() {
-        this.thrown =
-            catchThrowable(() -> Preconditions.requiresUnsigned(GivenNegativeInteger.this.number));
+        this.thrownInt =
+            catchThrowable(
+                () -> Preconditions.requiresUnsigned(GivenNegativeNumber.this.negativeInt));
+        this.thrownFloat =
+            catchThrowable(
+                () -> Preconditions.requiresUnsigned(GivenNegativeNumber.this.negativeFloat));
+        this.thrownDouble =
+            catchThrowable(
+                () -> Preconditions.requiresUnsigned(GivenNegativeNumber.this.negativeDouble));
       }
 
       @Test
-      void thenItShouldThrowNumberSignException() {
-        assertThat(this.thrown).isInstanceOf(NumberSignException.class);
+      void thenItShouldThrowNumberSignExceptionForIntParam() {
+        assertThat(this.thrownInt).isInstanceOf(NumberSignException.class);
+      }
+
+      @Test
+      void thenItShouldThrowNumberSignExceptionForFloatParam() {
+        assertThat(this.thrownFloat).isInstanceOf(NumberSignException.class);
+      }
+
+      @Test
+      void thenItShouldThrowNumberSignExceptionForDoubleParam() {
+        assertThat(this.thrownDouble).isInstanceOf(NumberSignException.class);
       }
     }
 
     @Nested
     class WhenCallingRequiresStrictlyPositive {
 
-      private Throwable thrown;
+      private Throwable thrownInt;
+      private Throwable thrownFloat;
+      private Throwable thrownDouble;
 
       @BeforeEach
       void setup() {
-        this.thrown =
+        this.thrownInt =
             catchThrowable(
-                () -> Preconditions.requiresStrictlyPositive(GivenNegativeInteger.this.number));
+                () -> Preconditions.requiresStrictlyPositive(GivenNegativeNumber.this.negativeInt));
+        this.thrownFloat =
+            catchThrowable(
+                () ->
+                    Preconditions.requiresStrictlyPositive(GivenNegativeNumber.this.negativeFloat));
+        this.thrownDouble =
+            catchThrowable(
+                () ->
+                    Preconditions.requiresStrictlyPositive(
+                        GivenNegativeNumber.this.negativeDouble));
       }
 
       @Test
-      void thenItShouldThrowAssertionFailedException() {
-        assertThat(this.thrown).isInstanceOf(AssertionFailedException.class);
+      void thenItShouldThrowAssertionFailedExceptionForIntParam() {
+        assertThat(this.thrownInt).isInstanceOf(AssertionFailedException.class);
+      }
+
+      @Test
+      void thenItShouldThrowAssertionFailedExceptionForFloatParam() {
+        assertThat(this.thrownFloat).isInstanceOf(AssertionFailedException.class);
+      }
+
+      @Test
+      void thenItShouldThrowAssertionFailedExceptionForDoubleParam() {
+        assertThat(this.thrownDouble).isInstanceOf(AssertionFailedException.class);
       }
     }
   }
