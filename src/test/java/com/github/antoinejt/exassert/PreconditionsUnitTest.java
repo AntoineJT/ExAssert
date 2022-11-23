@@ -21,9 +21,9 @@ class PreconditionsUnitTest {
 
     @BeforeEach
     void setup() {
-      this.positiveInt = Faker.instance().number().positive();
-      this.positiveFloat = Faker.instance().number().positive();
-      this.positiveDouble = Faker.instance().number().positive();
+      this.positiveInt = PreconditionsUnitTest.this.generatePositiveNumber();
+      this.positiveFloat = PreconditionsUnitTest.this.generatePositiveNumber();
+      this.positiveDouble = PreconditionsUnitTest.this.generatePositiveNumber();
     }
 
     @Nested
@@ -117,9 +117,9 @@ class PreconditionsUnitTest {
 
     @BeforeEach
     void setup() {
-      this.negativeInt = Faker.instance().number().negative();
-      this.negativeFloat = Faker.instance().number().negative();
-      this.negativeDouble = Faker.instance().number().negative();
+      this.negativeInt = PreconditionsUnitTest.this.generateNegativeNumber();
+      this.negativeFloat = PreconditionsUnitTest.this.generateNegativeNumber();
+      this.negativeDouble = PreconditionsUnitTest.this.generateNegativeNumber();
     }
 
     @Nested
@@ -270,5 +270,13 @@ class PreconditionsUnitTest {
         assertThat(this.thrownForDouble).isInstanceOf(AssertionFailedException.class);
       }
     }
+  }
+
+  private int generatePositiveNumber() {
+    return Faker.instance().number().positive();
+  }
+
+  private int generateNegativeNumber() {
+    return Faker.instance().number().negative();
   }
 }
