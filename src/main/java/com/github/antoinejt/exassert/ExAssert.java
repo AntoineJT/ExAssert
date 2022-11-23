@@ -19,18 +19,18 @@ public class ExAssert {
   }
 
   public static void exAssert(
-      final boolean condition, final Class<? extends RuntimeException> exClass) {
+      final boolean condition, final Class<? extends RuntimeException> exceptionClass) {
     if (!condition) {
-      Internals.throwException(exClass);
+      Internals.throwException(exceptionClass);
     }
   }
 
   public static void exAssert(
       final boolean condition,
       final String message,
-      final Class<? extends RuntimeException> exClass) {
+      final Class<? extends RuntimeException> exceptionClass) {
     if (!condition) {
-      Internals.throwException(message, exClass);
+      Internals.throwException(message, exceptionClass);
     }
   }
 
@@ -44,23 +44,25 @@ public class ExAssert {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static final class Internals {
 
-    public static void throwInternalException(final String ctorParameters, final Exception ex)
+    public static void throwInternalException(
+        final String constructorParameters, final Exception exception)
         throws ExAssertInternalException {
       final String reason =
           String.format(
-              "Please check your assertions are throwing exceptions implementing ctor(%s).%nHere is the internal exception: %n%s",
-              ctorParameters, ex.getMessage());
+              "Please check your assertions are throwing exceptions implementing constructor(%s).%nHere is the internal exception: %n%s",
+              constructorParameters, exception.getMessage());
       throw new ExAssertInternalException(reason);
     }
 
-    public static void throwInternalException(final Exception ex) throws ExAssertInternalException {
-      throwInternalException("", ex);
+    public static void throwInternalException(final Exception exception)
+        throws ExAssertInternalException {
+      throwInternalException("", exception);
     }
 
     public static void throwException(
-        final String message, final Class<? extends RuntimeException> exClass) {
+        final String message, final Class<? extends RuntimeException> exceptionClass) {
       try {
-        throw exClass.getConstructor(String.class).newInstance(message);
+        throw exceptionClass.getConstructor(String.class).newInstance(message);
       } catch (final NoSuchMethodException
           | SecurityException
           | InstantiationException
@@ -71,9 +73,9 @@ public class ExAssert {
       }
     }
 
-    private static void throwException(final Class<? extends RuntimeException> exClass) {
+    private static void throwException(final Class<? extends RuntimeException> exceptionClass) {
       try {
-        throw exClass.getConstructor().newInstance();
+        throw exceptionClass.getConstructor().newInstance();
       } catch (final NoSuchMethodException
           | SecurityException
           | InstantiationException
