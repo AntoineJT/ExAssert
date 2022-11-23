@@ -14,22 +14,25 @@ public class ExAssert {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static final class Internals {
 
-    protected static void throwInternalException(String ctorParameters, Exception ex)
+    public static void throwInternalException(final String ctorParameters, final Exception ex)
         throws ExAssertInternalException {
-      throw new ExAssertInternalException(
-          "Please check your assertions are throwing exceptions implementing ctor("
-              + ctorParameters
-              + ").\n"
-              + "Here is the internal exception: \n"
-              + ex.getMessage());
+      final String reason =
+          String.format(
+              "Please check your assertions are throwing exceptions implementing ctor(%s).%nHere is the internal exception: %n%s",
+              ctorParameters, ex.getMessage());
+      throw new ExAssertInternalException(reason);
     }
 
-    protected static void throwException(String message, Class<? extends Exception> exClass)
-        throws ExAssertInternalException, Exception {
+    public static void throwInternalException(final Exception ex) throws ExAssertInternalException {
+      throwInternalException("", ex);
+    }
+
+    public static void throwException(
+        final String message, final Class<? extends Exception> exClass) throws Exception {
       try {
-        Constructor<? extends Exception> constructor = exClass.getConstructor(String.class);
+        final Constructor<? extends Exception> constructor = exClass.getConstructor(String.class);
         throw constructor.newInstance(message);
-      } catch (NoSuchMethodException
+      } catch (final NoSuchMethodException
           | SecurityException
           | InstantiationException
           | IllegalAccessException
@@ -39,57 +42,63 @@ public class ExAssert {
       }
     }
 
-    protected static void throwException(Class<? extends Exception> exClass)
-        throws ExAssertInternalException, Exception {
+    private static void throwException(final Class<? extends Exception> exClass) throws Exception {
       try {
-        Constructor<? extends Exception> constructor = exClass.getConstructor();
+        final Constructor<? extends Exception> constructor = exClass.getConstructor();
         throw constructor.newInstance();
-      } catch (NoSuchMethodException
+      } catch (final NoSuchMethodException
           | SecurityException
           | InstantiationException
           | IllegalAccessException
           | IllegalArgumentException
           | InvocationTargetException ex) {
-        throwInternalException("", ex);
+        throwInternalException(ex);
       }
     }
   }
 
-  public static void exAssert(boolean condition) {
+  public static void exAssert(final boolean condition) {
     exAssert(condition, AssertionFailedException::new);
   }
 
-  public static void exAssert(boolean condition, String message) {
+  public static void exAssert(final boolean condition, final String message) {
     exAssert(condition, message, AssertionFailedException.class);
   }
 
-  public static void exAssert(boolean condition, Class<? extends Exception> exClass) {
-    if (condition) return;
+  public static void exAssert(final boolean condition, final Class<? extends Exception> exClass) {
+    if (condition) {
+      return;
+    }
 
     try {
       Internals.throwException(exClass);
-    } catch (Exception e) {
+    } catch (final Exception e) {
       e.printStackTrace();
     }
   }
 
   public static void exAssert(
-      boolean condition, String message, Class<? extends Exception> exClass) {
-    if (condition) return;
+      final boolean condition, final String message, final Class<? extends Exception> exClass) {
+    if (condition) {
+      return;
+    }
 
     try {
       Internals.throwException(message, exClass);
-    } catch (Exception e) {
+    } catch (final Exception e) {
       e.printStackTrace();
     }
   }
 
-  public static void exAssert(boolean condition, Supplier<? extends Exception> supplier) {
-    if (condition) return;
+  public static void exAssert(
+      final boolean condition, final Supplier<? extends Exception> supplier) {
+    if (condition) {
+      return;
+    }
 
     try {
       throw supplier.get();
-    } catch (Exception e) {
+    } catch (final Exception e) {
       e.printStackTrace();
     }
   }
