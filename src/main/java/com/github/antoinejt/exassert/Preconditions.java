@@ -36,12 +36,13 @@ public class Preconditions {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static final class Internals {
-    public static void assertUnsigned(final boolean condition, final Object value) {
+
+    private static void assertUnsigned(final boolean condition, final Object value) {
       final String reason = String.format("Number must be unsigned/positive. Found `%s`.", value);
       exAssert(condition, reason, NumberSignException.class);
     }
 
-    public static void assertStrictlyPositive(final boolean condition, final Object value) {
+    private static void assertStrictlyPositive(final boolean condition, final Object value) {
       final String reason = String.format("Number must be strictly positive. Found `%s`.", value);
       exAssert(condition, reason, AssertionFailedException.class);
     }

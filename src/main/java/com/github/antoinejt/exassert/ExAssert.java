@@ -44,7 +44,7 @@ public class ExAssert {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static final class Internals {
 
-    public static void throwInternalException(
+    private static void throwInternalException(
         final String constructorParameters, final Exception exception)
         throws ExAssertInternalException {
       final String reason =
@@ -54,12 +54,12 @@ public class ExAssert {
       throw new ExAssertInternalException(reason);
     }
 
-    public static void throwInternalException(final Exception exception)
+    private static void throwInternalException(final Exception exception)
         throws ExAssertInternalException {
       throwInternalException("", exception);
     }
 
-    public static void throwException(
+    private static void throwException(
         final String message, final Class<? extends RuntimeException> exceptionClass) {
       try {
         throw exceptionClass.getConstructor(String.class).newInstance(message);
