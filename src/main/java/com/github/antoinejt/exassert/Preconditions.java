@@ -10,41 +10,40 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Preconditions {
 
-  private static void assertUnsigned(boolean condition, Object value) {
-    exAssert(
-        condition,
-        "Number must be unsigned/positive. Found `" + value + "`.",
-        NumberSignException.class);
+  public static void requiresUnsigned(final int i) {
+    Internals.assertUnsigned(i >= 0, i);
   }
 
-  public static void requiresUnsigned(int i) {
-    assertUnsigned(i >= 0, i);
+  public static void requiresUnsigned(final float f) {
+    Internals.assertUnsigned(f >= 0, f);
   }
 
-  public static void requiresUnsigned(float f) {
-    assertUnsigned(f >= 0, f);
+  public static void requiresUnsigned(final double d) {
+    Internals.assertUnsigned(d >= 0, d);
   }
 
-  public static void requiresUnsigned(double d) {
-    assertUnsigned(d >= 0, d);
+  public static void requiresStrictlyPositive(final int i) {
+    Internals.assertStrictlyPositive(i > 0, i);
   }
 
-  private static void assertStrictlyPositive(boolean condition, Object value) {
-    exAssert(
-        condition,
-        "Number must be strictly positive. Found `" + value + "`.",
-        AssertionFailedException.class);
+  public static void requiresStrictlyPositive(final float f) {
+    Internals.assertStrictlyPositive(f > 0, f);
   }
 
-  public static void requiresStrictlyPositive(int i) {
-    assertStrictlyPositive(i > 0, i);
+  public static void requiresStrictlyPositive(final double d) {
+    Internals.assertStrictlyPositive(d > 0, d);
   }
 
-  public static void requiresStrictlyPositive(float f) {
-    assertStrictlyPositive(f > 0, f);
-  }
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  private static final class Internals {
+    public static void assertUnsigned(final boolean condition, final Object value) {
+      final String reason = String.format("Number must be unsigned/positive. Found `%s`.", value);
+      exAssert(condition, reason, NumberSignException.class);
+    }
 
-  public static void requiresStrictlyPositive(double d) {
-    assertStrictlyPositive(d > 0, d);
+    public static void assertStrictlyPositive(final boolean condition, final Object value) {
+      final String reason = String.format("Number must be strictly positive. Found `%s`.", value);
+      exAssert(condition, reason, AssertionFailedException.class);
+    }
   }
 }
