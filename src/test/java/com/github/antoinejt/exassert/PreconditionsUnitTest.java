@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
 import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
+import com.github.antoinejt.exassert.exceptions.NumberSignException;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -84,8 +85,8 @@ class PreconditionsUnitTest {
       }
 
       @Test
-      void thenItShouldThrowAssertionFailedException() {
-        assertThat(this.thrown).isInstanceOf(AssertionFailedException.class);
+      void thenItShouldThrowNumberSignException() {
+        assertThat(this.thrown).isInstanceOf(NumberSignException.class);
       }
     }
 
