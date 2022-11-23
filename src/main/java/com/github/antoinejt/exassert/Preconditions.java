@@ -2,14 +2,14 @@ package com.github.antoinejt.exassert;
 
 import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
 import com.github.antoinejt.exassert.exceptions.NumberSignException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import static com.github.antoinejt.exassert.ExAssert.exAssert;
 
 @SuppressWarnings("unused")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Preconditions {
-    private Preconditions() {
-        // hides the public default ctor
-    }
 
     private static void assertUnsigned(boolean condition, Object value) {
         exAssert(condition, "Number must be unsigned/positive. Found `" + value + "`.", NumberSignException.class);

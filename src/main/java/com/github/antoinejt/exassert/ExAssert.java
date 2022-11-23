@@ -2,6 +2,8 @@ package com.github.antoinejt.exassert;
 
 import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
 import com.github.antoinejt.exassert.exceptions.ExAssertInternalException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -9,16 +11,12 @@ import java.util.function.Supplier;
 
 // S1148: Sonarlint - Use a logger instead of printStackTrace
 @SuppressWarnings("java:S1148")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExAssert {
-    private ExAssert() {
-        // hides the public default ctor
-    }
-    
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     private static final class Internals {
-        private Internals() {
-            // hides the public default ctor
-        }
-        
+
         protected static void throwInternalException(String ctorParameters, Exception ex) throws ExAssertInternalException {
             throw new ExAssertInternalException(
                     "Please check your assertions are throwing exceptions implementing ctor(" + ctorParameters + ").\n"
