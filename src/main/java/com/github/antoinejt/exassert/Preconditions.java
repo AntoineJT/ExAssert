@@ -6,6 +6,7 @@ import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
 import com.github.antoinejt.exassert.exceptions.NumberSignException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Preconditions {
@@ -37,12 +38,13 @@ public class Preconditions {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static final class Internals {
 
-    private static void assertUnsigned(final boolean condition, final Object value) {
+    private static void assertUnsigned(final boolean condition, @NonNull final Object value) {
       final String reason = String.format("Number must be unsigned/positive. Found `%s`.", value);
       exAssert(condition, reason, NumberSignException.class);
     }
 
-    private static void assertStrictlyPositive(final boolean condition, final Object value) {
+    private static void assertStrictlyPositive(
+        final boolean condition, @NonNull final Object value) {
       final String reason = String.format("Number must be strictly positive. Found `%s`.", value);
       exAssert(condition, reason, AssertionFailedException.class);
     }

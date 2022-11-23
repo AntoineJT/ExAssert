@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExAssert {
@@ -14,12 +15,12 @@ public class ExAssert {
     exAssert(condition, AssertionFailedException::new);
   }
 
-  public static void exAssert(final boolean condition, final String message) {
+  public static void exAssert(final boolean condition, @NonNull final String message) {
     exAssert(condition, message, AssertionFailedException.class);
   }
 
   public static void exAssert(
-      final boolean condition, final Class<? extends RuntimeException> exceptionClass) {
+      final boolean condition, @NonNull final Class<? extends RuntimeException> exceptionClass) {
     if (!condition) {
       Internals.throwException(exceptionClass);
     }
@@ -27,15 +28,15 @@ public class ExAssert {
 
   public static void exAssert(
       final boolean condition,
-      final String message,
-      final Class<? extends RuntimeException> exceptionClass) {
+      @NonNull final String message,
+      @NonNull final Class<? extends RuntimeException> exceptionClass) {
     if (!condition) {
       Internals.throwException(message, exceptionClass);
     }
   }
 
   public static void exAssert(
-      final boolean condition, final Supplier<? extends RuntimeException> supplier) {
+      final boolean condition, @NonNull final Supplier<? extends RuntimeException> supplier) {
     if (!condition) {
       throw supplier.get();
     }
@@ -45,7 +46,7 @@ public class ExAssert {
   private static final class Internals {
 
     private static void throwInternalException(
-        final String constructorParameters, final Exception exception)
+        @NonNull final String constructorParameters, @NonNull final Exception exception)
         throws ExAssertInternalException {
       final String reason =
           String.format(
@@ -54,13 +55,14 @@ public class ExAssert {
       throw new ExAssertInternalException(reason);
     }
 
-    private static void throwInternalException(final Exception exception)
+    private static void throwInternalException(@NonNull final Exception exception)
         throws ExAssertInternalException {
       throwInternalException("", exception);
     }
 
     private static void throwException(
-        final String message, final Class<? extends RuntimeException> exceptionClass) {
+        @NonNull final String message,
+        @NonNull final Class<? extends RuntimeException> exceptionClass) {
       try {
         throw exceptionClass.getConstructor(String.class).newInstance(message);
       } catch (final NoSuchMethodException
@@ -73,7 +75,8 @@ public class ExAssert {
       }
     }
 
-    private static void throwException(final Class<? extends RuntimeException> exceptionClass) {
+    private static void throwException(
+        @NonNull final Class<? extends RuntimeException> exceptionClass) {
       try {
         throw exceptionClass.getConstructor().newInstance();
       } catch (final NoSuchMethodException
