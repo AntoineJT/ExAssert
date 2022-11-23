@@ -7,7 +7,6 @@ import com.github.antoinejt.exassert.exceptions.NumberSignException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-@SuppressWarnings("unused")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Preconditions {
 

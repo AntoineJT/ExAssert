@@ -8,8 +8,6 @@ import java.util.function.Supplier;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-// S1148: Sonarlint - Use a logger instead of printStackTrace
-@SuppressWarnings("java:S1148")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExAssert {
 
@@ -26,11 +24,6 @@ public class ExAssert {
               + ex.getMessage());
     }
 
-    // S1130: Sonarlint - Should not throw subclass exceptions of already specified exceptions
-    // I want to be able to catch this particular exception, here the internal one
-    // S112: Sonarlint - Generic exceptions should never be thrown
-    // I throw a subclass of exception via Reflection, I must throw Exception then
-    @SuppressWarnings({"java:S1130", "java:S112"})
     protected static void throwException(String message, Class<? extends Exception> exClass)
         throws ExAssertInternalException, Exception {
       try {
@@ -46,11 +39,6 @@ public class ExAssert {
       }
     }
 
-    // S1130: Sonarlint - Should not throw subclass exceptions of already specified exceptions
-    // I want to be able to catch this particular exception, here the internal one
-    // S112: Sonarlint - Generic exceptions should never be thrown
-    // I throw a subclass of exception via Reflection, I must throw Exception then
-    @SuppressWarnings({"java:S1130", "java:S112"})
     protected static void throwException(Class<? extends Exception> exClass)
         throws ExAssertInternalException, Exception {
       try {
