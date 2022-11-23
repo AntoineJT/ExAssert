@@ -2,7 +2,6 @@ package com.github.antoinejt.exassert;
 
 import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
 import com.github.antoinejt.exassert.exceptions.ExAssertInternalException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 import lombok.AccessLevel;
@@ -28,10 +27,9 @@ public class ExAssert {
     }
 
     public static void throwException(
-        final String message, final Class<? extends Exception> exClass) throws Exception {
+        final String message, final Class<? extends RuntimeException> exClass) {
       try {
-        final Constructor<? extends Exception> constructor = exClass.getConstructor(String.class);
-        throw constructor.newInstance(message);
+        throw exClass.getConstructor(String.class).newInstance(message);
       } catch (final NoSuchMethodException
           | SecurityException
           | InstantiationException
@@ -42,10 +40,9 @@ public class ExAssert {
       }
     }
 
-    private static void throwException(final Class<? extends Exception> exClass) throws Exception {
+    private static void throwException(final Class<? extends RuntimeException> exClass) {
       try {
-        final Constructor<? extends Exception> constructor = exClass.getConstructor();
-        throw constructor.newInstance();
+        throw exClass.getConstructor().newInstance();
       } catch (final NoSuchMethodException
           | SecurityException
           | InstantiationException
@@ -65,41 +62,26 @@ public class ExAssert {
     exAssert(condition, message, AssertionFailedException.class);
   }
 
-  public static void exAssert(final boolean condition, final Class<? extends Exception> exClass) {
-    if (condition) {
-      return;
-    }
-
-    try {
+  public static void exAssert(
+      final boolean condition, final Class<? extends RuntimeException> exClass) {
+    if (!condition) {
       Internals.throwException(exClass);
-    } catch (final Exception e) {
-      e.printStackTrace();
     }
   }
 
   public static void exAssert(
-      final boolean condition, final String message, final Class<? extends Exception> exClass) {
-    if (condition) {
-      return;
-    }
-
-    try {
+      final boolean condition,
+      final String message,
+      final Class<? extends RuntimeException> exClass) {
+    if (!condition) {
       Internals.throwException(message, exClass);
-    } catch (final Exception e) {
-      e.printStackTrace();
     }
   }
 
   public static void exAssert(
-      final boolean condition, final Supplier<? extends Exception> supplier) {
-    if (condition) {
-      return;
-    }
-
-    try {
+      final boolean condition, final Supplier<? extends RuntimeException> supplier) {
+    if (!condition) {
       throw supplier.get();
-    } catch (final Exception e) {
-      e.printStackTrace();
     }
   }
 }

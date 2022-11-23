@@ -1,11 +1,7 @@
 package com.github.antoinejt.exassert.exceptions;
 
-public class ExAssertInternalException extends Exception {
-  public ExAssertInternalException() {
-    super();
-  }
-
-  public ExAssertInternalException(String msg) {
+public class ExAssertInternalException extends RuntimeException {
+  public ExAssertInternalException(final String msg) {
     super(msg);
   }
 }

@@ -5,7 +5,7 @@ public class NumberSignException extends AssertionFailedException {
     super();
   }
 
-  public NumberSignException(String msg) {
+  public NumberSignException(final String msg) {
     super(msg);
   }
 }
