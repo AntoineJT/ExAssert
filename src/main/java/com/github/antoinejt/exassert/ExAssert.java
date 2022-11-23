@@ -10,6 +10,37 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExAssert {
 
+  public static void exAssert(final boolean condition) {
+    exAssert(condition, AssertionFailedException::new);
+  }
+
+  public static void exAssert(final boolean condition, final String message) {
+    exAssert(condition, message, AssertionFailedException.class);
+  }
+
+  public static void exAssert(
+      final boolean condition, final Class<? extends RuntimeException> exClass) {
+    if (!condition) {
+      Internals.throwException(exClass);
+    }
+  }
+
+  public static void exAssert(
+      final boolean condition,
+      final String message,
+      final Class<? extends RuntimeException> exClass) {
+    if (!condition) {
+      Internals.throwException(message, exClass);
+    }
+  }
+
+  public static void exAssert(
+      final boolean condition, final Supplier<? extends RuntimeException> supplier) {
+    if (!condition) {
+      throw supplier.get();
+    }
+  }
+
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static final class Internals {
 
@@ -51,37 +82,6 @@ public class ExAssert {
           | InvocationTargetException ex) {
         throwInternalException(ex);
       }
-    }
-  }
-
-  public static void exAssert(final boolean condition) {
-    exAssert(condition, AssertionFailedException::new);
-  }
-
-  public static void exAssert(final boolean condition, final String message) {
-    exAssert(condition, message, AssertionFailedException.class);
-  }
-
-  public static void exAssert(
-      final boolean condition, final Class<? extends RuntimeException> exClass) {
-    if (!condition) {
-      Internals.throwException(exClass);
-    }
-  }
-
-  public static void exAssert(
-      final boolean condition,
-      final String message,
-      final Class<? extends RuntimeException> exClass) {
-    if (!condition) {
-      Internals.throwException(message, exClass);
-    }
-  }
-
-  public static void exAssert(
-      final boolean condition, final Supplier<? extends RuntimeException> supplier) {
-    if (!condition) {
-      throw supplier.get();
     }
   }
 }
