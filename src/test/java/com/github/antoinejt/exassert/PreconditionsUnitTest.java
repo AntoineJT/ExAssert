@@ -3,13 +3,16 @@ package com.github.antoinejt.exassert;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
+import com.github.antoinejt.exassert._helper.CamelCaseDisplayNameGenerator;
 import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
 import com.github.antoinejt.exassert.exceptions.NumberSignException;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@DisplayNameGeneration(CamelCaseDisplayNameGenerator.class)
 class PreconditionsUnitTest {
 
   @Nested
