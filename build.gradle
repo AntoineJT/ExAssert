@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
     id 'io.freefair.lombok' version '6.6-rc1'
+    id 'com.github.sherter.google-java-format' version '0.9'
 }
 
 group 'com.github.antoinejt'
@@ -19,3 +20,5 @@ test {
 	useJUnitPlatform()
 	failFast = true
 }
+
+compileJava.dependsOn verifyGoogleJavaFormat
