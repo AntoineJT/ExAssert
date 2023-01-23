@@ -2,101 +2,91 @@ package com.github.antoinejt.exassert;
 
 import com.github.antoinejt.exassert.exceptions.AssertionFailedException;
 import com.github.antoinejt.exassert.exceptions.ExAssertInternalException;
-
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-// S1148: Sonarlint - Use a logger instead of printStackTrace
-@SuppressWarnings("java:S1148")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExAssert {
-    private ExAssert() {
-        // hides the public default ctor
+
+  public static void exAssert(final boolean condition) {
+    exAssert(condition, AssertionFailedException::new);
+  }
+
+  public static void exAssert(final boolean condition, @NonNull final String message) {
+    exAssert(condition, message, AssertionFailedException.class);
+  }
+
+  public static void exAssert(
+      final boolean condition, @NonNull final Class<? extends RuntimeException> exceptionClass) {
+    if (!condition) {
+      Internals.throwException(exceptionClass);
     }
-    
-    private static final class Internals {
-        private Internals() {
-            // hides the public default ctor
-        }
-        
-        protected static void throwInternalException(String ctorParameters, Exception ex) throws ExAssertInternalException {
-            throw new ExAssertInternalException(
-                    "Please check your assertions are throwing exceptions implementing ctor(" + ctorParameters + ").\n"
-                    + "Here is the internal exception: \n" 
-                    + ex.getMessage());
-        }
-        
-        // S1130: Sonarlint - Should not throw subclass exceptions of already specified exceptions
-        // I want to be able to catch this particular exception, here the internal one
-        // S112: Sonarlint - Generic exceptions should never be thrown
-        // I throw a subclass of exception via Reflection, I must throw Exception then
-        @SuppressWarnings({"java:S1130", "java:S112"})
-        protected static void throwException(String message, Class<? extends Exception> exClass) throws ExAssertInternalException, Exception {
-            try {
-                Constructor<? extends Exception> constructor = exClass.getConstructor(String.class);
-                throw constructor.newInstance(message);
-            } catch (NoSuchMethodException | SecurityException
-                    | InstantiationException | IllegalAccessException
-                    | IllegalArgumentException | InvocationTargetException ex) {
-                throwInternalException("String", ex);
-            }
-        }
-        
-        // S1130: Sonarlint - Should not throw subclass exceptions of already specified exceptions
-        // I want to be able to catch this particular exception, here the internal one
-        // S112: Sonarlint - Generic exceptions should never be thrown
-        // I throw a subclass of exception via Reflection, I must throw Exception then
-        @SuppressWarnings({"java:S1130", "java:S112"})
-        protected static void throwException(Class<? extends Exception> exClass) throws ExAssertInternalException, Exception {
-            try {
-                Constructor<? extends Exception> constructor = exClass.getConstructor();
-                throw constructor.newInstance();
-            } catch (NoSuchMethodException | SecurityException
-                    | InstantiationException | IllegalAccessException
-                    | IllegalArgumentException | InvocationTargetException ex) {
-                throwInternalException("", ex);
-            }
-        }
+  }
+
+  public static void exAssert(
+      final boolean condition,
+      @NonNull final String message,
+      @NonNull final Class<? extends RuntimeException> exceptionClass) {
+    if (!condition) {
+      Internals.throwException(message, exceptionClass);
+    }
+  }
+
+  public static void exAssert(
+      final boolean condition, @NonNull final Supplier<? extends RuntimeException> supplier) {
+    if (!condition) {
+      throw supplier.get();
+    }
+  }
+
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  private static final class Internals {
+
+    private static void throwInternalException(
+        @NonNull final String constructorParameters, @NonNull final Exception exception)
+        throws ExAssertInternalException {
+      final String reason =
+          String.format(
+              "Please check your assertions are throwing exceptions implementing constructor(%s).%nHere is the internal exception: %n%s",
+              constructorParameters, exception.getMessage());
+      throw new ExAssertInternalException(reason);
     }
 
-    public static void exAssert(boolean condition) {
-        exAssert(condition, AssertionFailedException::new);
+    private static void throwInternalException(@NonNull final Exception exception)
+        throws ExAssertInternalException {
+      throwInternalException("", exception);
     }
 
-    public static void exAssert(boolean condition, String message) {
-        exAssert(condition, message, AssertionFailedException.class);
+    private static void throwException(
+        @NonNull final String message,
+        @NonNull final Class<? extends RuntimeException> exceptionClass) {
+      try {
+        throw exceptionClass.getConstructor(String.class).newInstance(message);
+      } catch (final NoSuchMethodException
+          | SecurityException
+          | InstantiationException
+          | IllegalAccessException
+          | IllegalArgumentException
+          | InvocationTargetException ex) {
+        throwInternalException("String", ex);
+      }
     }
 
-    public static void exAssert(boolean condition, Class<? extends Exception> exClass) {
-        if (condition)
-            return;
-
-        try {
-            Internals.throwException(exClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static void throwException(
+        @NonNull final Class<? extends RuntimeException> exceptionClass) {
+      try {
+        throw exceptionClass.getConstructor().newInstance();
+      } catch (final NoSuchMethodException
+          | SecurityException
+          | InstantiationException
+          | IllegalAccessException
+          | IllegalArgumentException
+          | InvocationTargetException ex) {
+        throwInternalException(ex);
+      }
     }
-
-    public static void exAssert(boolean condition, String message, Class<? extends Exception> exClass) {
-        if (condition)
-            return;
-        
-        try {
-            Internals.throwException(message, exClass);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void exAssert(boolean condition, Supplier<? extends Exception> supplier) {
-        if (condition)
-            return;
-
-        try {
-            throw supplier.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+  }
 }

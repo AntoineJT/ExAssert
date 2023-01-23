@@ -1,12 +1,12 @@
 package com.github.antoinejt.exassert.exceptions;
 
-@SuppressWarnings("serial")
-public class AssertionFailedException extends Exception {
-    public AssertionFailedException() {
-        super();
-    }
+public class AssertionFailedException extends RuntimeException {
 
-    public AssertionFailedException(String msg) {
-        super(msg);
-    }
+  public AssertionFailedException() {
+    super();
+  }
+
+  public AssertionFailedException(final String msg) {
+    super(msg);
+  }
 }

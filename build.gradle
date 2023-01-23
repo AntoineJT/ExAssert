@@ -1,20 +1,27 @@
 plugins {
-	id 'java'
+    id 'java'
+    id 'io.freefair.lombok' version '6.6-rc1'
+    id 'com.github.sherter.google-java-format' version '0.9'
 }
 
 group 'com.github.antoinejt'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+    testImplementation 'net.datafaker:datafaker:1.6.0'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 }
 
 test {
-	useJUnitPlatform()
-	failFast = true
+    useJUnitPlatform()
+    failFast = true
 }
+
+compileJava.dependsOn verifyGoogleJavaFormat
